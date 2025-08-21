@@ -19,12 +19,19 @@ const OpenaiClient = new OpenAI({
 
 async function main() {
   try {
-    const response = await OpenaiClient.responses.create({
+    const stream = await OpenaiClient.responses.create({
       model: 'gpt-5-nano',
-      tools: [{type: 'web_search_preview'}],
-      input: 'What are the top US news headlines for today?',
+      input: [
+        {
+          role: 'user',
+          content: "Say 'double bubble bath' ten times fast.",
+        },
+      ],
+      stream: true,
     })
-    log('output_text', response.output_text)
+    for await (const event of stream) {
+      log('event', event)
+    }
   } catch (error) {
     log('Error', error)
   }
