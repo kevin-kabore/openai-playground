@@ -14,11 +14,25 @@ const openaiClient = new OpenAI({
 async function main() {
   try {
     const response = await openaiClient.responses.create({
-      model: 'gpt-5',
-      input: 'Write a one-sentence bedtime story about a unicorn.',
+      model: 'gpt-5-nano',
+      input: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'input_text',
+              text: 'what is in this image?',
+            },
+            {
+              type: 'input_image',
+              image_url:
+                'https://openai-documentation.vercel.app/images/cat_and_otter.png',
+              detail: 'auto',
+            },
+          ],
+        },
+      ],
     })
-    log('response', response)
-    log('output', response.output)
     log('output_text', response.output_text)
   } catch (error) {
     console.log(`Error: ${error}`)
